@@ -2,9 +2,9 @@ import createPomodoro, {
   IInteractWithUser,
   IDoCountdown,
   IManagePomodoro,
-} from "./create-pomodoro";
+} from "./pomodoro";
 
-let mockedTimer: IDoCountdown;
+let mockedTimer: IDoCountdown<string>;
 let mockedUser: IInteractWithUser;
 let pomodoro: IManagePomodoro;
 

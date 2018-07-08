@@ -1,8 +1,6 @@
 export default createPomodoro;
 
-export type CountdownId = string;
-
-export interface IDoCountdown {
+export interface IDoCountdown<CountdownId> {
   start: (countdownInMin: number, callback: Function) => CountdownId;
   cancel: (countdownId: CountdownId) => void;
 }
@@ -23,8 +21,8 @@ const SHORT_PAUSE_SESSION_IN_MIN = 5;
 const LONG_PAUSE_SESSION_IN_MIN = 15;
 const NOTIFICATION_TIME_IN_MIN = 1;
 
-function createPomodoro(
-  timer: IDoCountdown,
+function createPomodoro<CountdownId>(
+  timer: IDoCountdown<CountdownId>,
   user: IInteractWithUser
 ): IManagePomodoro {
   let interruptId: CountdownId;
