@@ -1,7 +1,7 @@
 import {
   launchWorkSession,
   launchPauseSession,
-  stopWorkSession,
+  stopSession,
   IInteractWithUser,
   IDoCountdown,
 } from "./index";
@@ -34,35 +34,6 @@ describe("launch work session", () => {
   });
 });
 
-describe("stop work session", () => {
-  it("should cancel interrupting user", () => {
-    const interruptId = "interrupt-user";
-    mockedTimer.start = jest
-      .fn()
-      .mockReturnValueOnce(interruptId)
-      .mockReturnValue("");
-
-    launchWorkSession(mockedTimer, mockedUser);
-    stopWorkSession(mockedTimer);
-
-    expect(mockedTimer.cancel).toBeCalledWith(interruptId);
-  });
-
-  it("should cancel notifying user", () => {
-    const notifyId = "notify-user";
-    mockedTimer.start = jest
-      .fn()
-      .mockReturnValueOnce("")
-      .mockReturnValueOnce(notifyId)
-      .mockReturnValue("");
-
-    launchWorkSession(mockedTimer, mockedUser);
-    stopWorkSession(mockedTimer);
-
-    expect(mockedTimer.cancel).toBeCalledWith(notifyId);
-  });
-});
-
 describe("launch pause session", () => {
   it("should interrupt user after 5' of pause session", () => {
     launchPauseSession(mockedTimer, mockedUser);
@@ -74,5 +45,65 @@ describe("launch pause session", () => {
     launchPauseSession(mockedTimer, mockedUser);
 
     expect(mockedTimer.start).toBeCalledWith(4, mockedUser.notify);
+  });
+});
+
+describe("stop session", () => {
+  describe("work session", () => {
+    it("should cancel interrupting user", () => {
+      const interruptId = "interrupt-user";
+      mockedTimer.start = jest
+        .fn()
+        .mockReturnValueOnce(interruptId)
+        .mockReturnValue("");
+
+      launchWorkSession(mockedTimer, mockedUser);
+      stopSession(mockedTimer);
+
+      expect(mockedTimer.cancel).toBeCalledWith(interruptId);
+    });
+
+    it("should cancel notifying user", () => {
+      const notifyId = "notify-user";
+      mockedTimer.start = jest
+        .fn()
+        .mockReturnValueOnce("")
+        .mockReturnValueOnce(notifyId)
+        .mockReturnValue("");
+
+      launchWorkSession(mockedTimer, mockedUser);
+      stopSession(mockedTimer);
+
+      expect(mockedTimer.cancel).toBeCalledWith(notifyId);
+    });
+  });
+
+  describe("pause session", () => {
+    it("should cancel interrupting user", () => {
+      const interruptId = "interrupt-user";
+      mockedTimer.start = jest
+        .fn()
+        .mockReturnValueOnce(interruptId)
+        .mockReturnValue("");
+
+      launchPauseSession(mockedTimer, mockedUser);
+      stopSession(mockedTimer);
+
+      expect(mockedTimer.cancel).toBeCalledWith(interruptId);
+    });
+
+    it("should cancel notifying user", () => {
+      const notifyId = "notify-user";
+      mockedTimer.start = jest
+        .fn()
+        .mockReturnValueOnce("")
+        .mockReturnValueOnce(notifyId)
+        .mockReturnValue("");
+
+      launchPauseSession(mockedTimer, mockedUser);
+      stopSession(mockedTimer);
+
+      expect(mockedTimer.cancel).toBeCalledWith(notifyId);
+    });
   });
 });

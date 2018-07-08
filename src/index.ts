@@ -34,11 +34,14 @@ export function launchPauseSession(
   timer: IDoCountdown,
   user: IInteractWithUser
 ): void {
-  timer.start(PAUSE_SESSION_IN_MIN, user.interrupt);
-  timer.start(PAUSE_SESSION_IN_MIN - NOTIFICATION_TIME_IN_MIN, user.notify);
+  interruptId = timer.start(PAUSE_SESSION_IN_MIN, user.interrupt);
+  notifyId = timer.start(
+    PAUSE_SESSION_IN_MIN - NOTIFICATION_TIME_IN_MIN,
+    user.notify
+  );
 }
 
-export function stopWorkSession(timer: IDoCountdown): void {
+export function stopSession(timer: IDoCountdown): void {
   timer.cancel(interruptId);
   timer.cancel(notifyId);
 }
