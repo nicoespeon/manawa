@@ -21,13 +21,13 @@ beforeEach(() => {
 });
 
 describe("launch work session", () => {
-  it("should interrupt user after 25' of work session", () => {
+  it("should interrupt user after 25'", () => {
     pomodoro.launchWorkSession();
 
     expect(mockedTimer.start).toBeCalledWith(25, mockedUser.interrupt);
   });
 
-  it("should notify user after 24' of work session", () => {
+  it("should notify user after 24'", () => {
     pomodoro.launchWorkSession();
 
     expect(mockedTimer.start).toBeCalledWith(24, mockedUser.notify);
@@ -35,37 +35,53 @@ describe("launch work session", () => {
 });
 
 describe("launch pause session", () => {
-  describe("first pause session", () => {
-    it("should interrupt user after 5' of pause session", () => {
-      pomodoro.launchPauseSession();
+  function shouldHaveShortPauseSessionAfter(nbOfPastPauses: number) {
+    describe(`after ${nbOfPastPauses} previous pause(s)`, () => {
+      beforeEach(() => {
+        for (let i = 0; i < nbOfPastPauses; i++) {
+          pomodoro.launchPauseSession();
+        }
 
-      expect(mockedTimer.start).toBeCalledWith(5, mockedUser.interrupt);
+        pomodoro.launchPauseSession();
+      });
+
+      it("should interrupt user after 5'", () => {
+        expect(mockedTimer.start).toBeCalledWith(5, mockedUser.interrupt);
+      });
+
+      it("should notify user after 4'", () => {
+        expect(mockedTimer.start).toBeCalledWith(4, mockedUser.notify);
+      });
     });
+  }
 
-    it("should notify user after 4' of pause session", () => {
-      pomodoro.launchPauseSession();
+  function shouldHaveLongPauseSessionAfter(nbOfPastPauses: number) {
+    describe(`after ${nbOfPastPauses} previous pause(s)`, () => {
+      beforeEach(() => {
+        for (let i = 0; i < nbOfPastPauses; i++) {
+          pomodoro.launchPauseSession();
+        }
 
-      expect(mockedTimer.start).toBeCalledWith(4, mockedUser.notify);
+        pomodoro.launchPauseSession();
+      });
+
+      it("should interrupt user after 15'", () => {
+        expect(mockedTimer.start).toBeCalledWith(15, mockedUser.interrupt);
+      });
+
+      it("should notify user after 14'", () => {
+        expect(mockedTimer.start).toBeCalledWith(14, mockedUser.notify);
+      });
     });
-  });
+  }
 
-  describe("third pause session", () => {
-    it("should interrupt user after 15' of pause session", () => {
-      pomodoro.launchPauseSession();
-      pomodoro.launchPauseSession();
-      pomodoro.launchPauseSession();
+  shouldHaveShortPauseSessionAfter(0);
+  shouldHaveShortPauseSessionAfter(1);
+  shouldHaveLongPauseSessionAfter(2);
 
-      expect(mockedTimer.start).toBeCalledWith(15, mockedUser.interrupt);
-    });
-
-    it("should notify user after 14' of pause session", () => {
-      pomodoro.launchPauseSession();
-      pomodoro.launchPauseSession();
-      pomodoro.launchPauseSession();
-
-      expect(mockedTimer.start).toBeCalledWith(14, mockedUser.notify);
-    });
-  });
+  shouldHaveShortPauseSessionAfter(3);
+  shouldHaveShortPauseSessionAfter(4);
+  shouldHaveLongPauseSessionAfter(5);
 });
 
 describe("stop session", () => {
