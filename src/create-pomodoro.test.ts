@@ -32,6 +32,14 @@ describe("launch work session", () => {
 
     expect(mockedTimer.start).toBeCalledWith(24, mockedUser.notify);
   });
+
+  it("should stop current session", () => {
+    spyOn(pomodoro, "stopSession");
+
+    pomodoro.launchWorkSession();
+
+    expect(pomodoro.stopSession).toBeCalled();
+  });
 });
 
 describe("launch pause session", () => {
@@ -82,6 +90,14 @@ describe("launch pause session", () => {
   shouldHaveShortPauseSessionAfter(3);
   shouldHaveShortPauseSessionAfter(4);
   shouldHaveLongPauseSessionAfter(5);
+
+  it("should stop current session", () => {
+    spyOn(pomodoro, "stopSession");
+
+    pomodoro.launchPauseSession();
+
+    expect(pomodoro.stopSession).toBeCalled();
+  });
 });
 
 describe("stop session", () => {

@@ -32,6 +32,8 @@ function createPomodoro(
   let nbOfPauseSession = 0;
 
   function launchWorkSession(): void {
+    this.stopSession();
+
     interruptId = timer.start(WORK_SESSION_IN_MIN, user.interrupt);
     notifyId = timer.start(
       WORK_SESSION_IN_MIN - NOTIFICATION_TIME_IN_MIN,
@@ -40,6 +42,8 @@ function createPomodoro(
   }
 
   function launchPauseSession(): void {
+    this.stopSession();
+
     nbOfPauseSession++;
     const pause_in_min =
       nbOfPauseSession % 3 === 0
