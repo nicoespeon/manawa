@@ -19,7 +19,8 @@ export interface IManagePomodoro {
 }
 
 const WORK_SESSION_IN_MIN = 25;
-const PAUSE_SESSION_IN_MIN = 5;
+const SHORT_PAUSE_SESSION_IN_MIN = 5;
+const LONG_PAUSE_SESSION_IN_MIN = 15;
 const NOTIFICATION_TIME_IN_MIN = 1;
 
 function createPomodoro(
@@ -28,6 +29,7 @@ function createPomodoro(
 ): IManagePomodoro {
   let interruptId: CountdownId;
   let notifyId: CountdownId;
+  let nbOfPauseSession = 0;
 
   function launchWorkSession(): void {
     interruptId = timer.start(WORK_SESSION_IN_MIN, user.interrupt);
@@ -38,9 +40,15 @@ function createPomodoro(
   }
 
   function launchPauseSession(): void {
-    interruptId = timer.start(PAUSE_SESSION_IN_MIN, user.interrupt);
+    nbOfPauseSession++;
+    const pause_in_min =
+      nbOfPauseSession % 3 === 0
+        ? LONG_PAUSE_SESSION_IN_MIN
+        : SHORT_PAUSE_SESSION_IN_MIN;
+
+    interruptId = timer.start(pause_in_min, user.interrupt);
     notifyId = timer.start(
-      PAUSE_SESSION_IN_MIN - NOTIFICATION_TIME_IN_MIN,
+      pause_in_min - NOTIFICATION_TIME_IN_MIN,
       user.notify
     );
   }

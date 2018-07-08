@@ -35,16 +35,36 @@ describe("launch work session", () => {
 });
 
 describe("launch pause session", () => {
-  it("should interrupt user after 5' of pause session", () => {
-    pomodoro.launchPauseSession();
+  describe("first pause session", () => {
+    it("should interrupt user after 5' of pause session", () => {
+      pomodoro.launchPauseSession();
 
-    expect(mockedTimer.start).toBeCalledWith(5, mockedUser.interrupt);
+      expect(mockedTimer.start).toBeCalledWith(5, mockedUser.interrupt);
+    });
+
+    it("should notify user after 4' of pause session", () => {
+      pomodoro.launchPauseSession();
+
+      expect(mockedTimer.start).toBeCalledWith(4, mockedUser.notify);
+    });
   });
 
-  it("should notify user after 4' of pause session", () => {
-    pomodoro.launchPauseSession();
+  describe("third pause session", () => {
+    it("should interrupt user after 15' of pause session", () => {
+      pomodoro.launchPauseSession();
+      pomodoro.launchPauseSession();
+      pomodoro.launchPauseSession();
 
-    expect(mockedTimer.start).toBeCalledWith(4, mockedUser.notify);
+      expect(mockedTimer.start).toBeCalledWith(15, mockedUser.interrupt);
+    });
+
+    it("should notify user after 14' of pause session", () => {
+      pomodoro.launchPauseSession();
+      pomodoro.launchPauseSession();
+      pomodoro.launchPauseSession();
+
+      expect(mockedTimer.start).toBeCalledWith(14, mockedUser.notify);
+    });
   });
 });
 
