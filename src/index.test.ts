@@ -1,9 +1,24 @@
-import launchWorkSession from "./index";
+import launchWorkSession, { IInteractWithUser } from "./index";
 
-it("should start a timer of 25'", () => {
-  const startTimer = jest.fn();
+let startTimer;
+let mockedUser: IInteractWithUser;
 
-  launchWorkSession(startTimer);
+beforeEach(() => {
+  startTimer = jest.fn();
+  mockedUser = {
+    notify: jest.fn(),
+    interrupt: jest.fn(),
+  };
+});
 
-  expect(startTimer).toBeCalledWith(25);
+it("should interrupt user after 25' of work session", () => {
+  launchWorkSession(startTimer, mockedUser);
+
+  expect(startTimer).toBeCalledWith(25, mockedUser.interrupt);
+});
+
+it("should notify user after 24' of work session", () => {
+  launchWorkSession(startTimer, mockedUser);
+
+  expect(startTimer).toBeCalledWith(24, mockedUser.notify);
 });
