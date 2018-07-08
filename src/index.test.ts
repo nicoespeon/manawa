@@ -1,5 +1,9 @@
-import { hello } from "./index";
+import launchWorkSession from "./index";
 
-it("should pass", () => {
-  expect(hello()).toBe("Hello world!");
+it("should start a timer of 25'", () => {
+  const startTimer = jest.fn();
+
+  launchWorkSession(startTimer);
+
+  expect(startTimer).toBeCalledWith(25);
 });
