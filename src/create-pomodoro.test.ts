@@ -1,13 +1,12 @@
-import {
-  launchWorkSession,
-  launchPauseSession,
-  stopSession,
+import createPomodoro, {
   IInteractWithUser,
   IDoCountdown,
-} from "./index";
+  IManagePomodoro,
+} from "./create-pomodoro";
 
 let mockedTimer: IDoCountdown;
 let mockedUser: IInteractWithUser;
+let pomodoro: IManagePomodoro;
 
 beforeEach(() => {
   mockedTimer = {
@@ -18,17 +17,18 @@ beforeEach(() => {
     notify: jest.fn(),
     interrupt: jest.fn(),
   };
+  pomodoro = createPomodoro(mockedTimer, mockedUser);
 });
 
 describe("launch work session", () => {
   it("should interrupt user after 25' of work session", () => {
-    launchWorkSession(mockedTimer, mockedUser);
+    pomodoro.launchWorkSession();
 
     expect(mockedTimer.start).toBeCalledWith(25, mockedUser.interrupt);
   });
 
   it("should notify user after 24' of work session", () => {
-    launchWorkSession(mockedTimer, mockedUser);
+    pomodoro.launchWorkSession();
 
     expect(mockedTimer.start).toBeCalledWith(24, mockedUser.notify);
   });
@@ -36,13 +36,13 @@ describe("launch work session", () => {
 
 describe("launch pause session", () => {
   it("should interrupt user after 5' of pause session", () => {
-    launchPauseSession(mockedTimer, mockedUser);
+    pomodoro.launchPauseSession();
 
     expect(mockedTimer.start).toBeCalledWith(5, mockedUser.interrupt);
   });
 
   it("should notify user after 4' of pause session", () => {
-    launchPauseSession(mockedTimer, mockedUser);
+    pomodoro.launchPauseSession();
 
     expect(mockedTimer.start).toBeCalledWith(4, mockedUser.notify);
   });
@@ -57,8 +57,8 @@ describe("stop session", () => {
         .mockReturnValueOnce(interruptId)
         .mockReturnValue("");
 
-      launchWorkSession(mockedTimer, mockedUser);
-      stopSession(mockedTimer);
+      pomodoro.launchWorkSession();
+      pomodoro.stopSession();
 
       expect(mockedTimer.cancel).toBeCalledWith(interruptId);
     });
@@ -71,8 +71,8 @@ describe("stop session", () => {
         .mockReturnValueOnce(notifyId)
         .mockReturnValue("");
 
-      launchWorkSession(mockedTimer, mockedUser);
-      stopSession(mockedTimer);
+      pomodoro.launchWorkSession();
+      pomodoro.stopSession();
 
       expect(mockedTimer.cancel).toBeCalledWith(notifyId);
     });
@@ -86,8 +86,8 @@ describe("stop session", () => {
         .mockReturnValueOnce(interruptId)
         .mockReturnValue("");
 
-      launchPauseSession(mockedTimer, mockedUser);
-      stopSession(mockedTimer);
+      pomodoro.launchPauseSession();
+      pomodoro.stopSession();
 
       expect(mockedTimer.cancel).toBeCalledWith(interruptId);
     });
@@ -100,8 +100,8 @@ describe("stop session", () => {
         .mockReturnValueOnce(notifyId)
         .mockReturnValue("");
 
-      launchPauseSession(mockedTimer, mockedUser);
-      stopSession(mockedTimer);
+      pomodoro.launchPauseSession();
+      pomodoro.stopSession();
 
       expect(mockedTimer.cancel).toBeCalledWith(notifyId);
     });
