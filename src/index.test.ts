@@ -1,5 +1,6 @@
 import {
   launchWorkSession,
+  launchPauseSession,
   stopWorkSession,
   IInteractWithUser,
   IDoCountdown,
@@ -59,5 +60,19 @@ describe("stop work session", () => {
     stopWorkSession(mockedTimer);
 
     expect(mockedTimer.cancel).toBeCalledWith(notifyId);
+  });
+});
+
+describe("launch pause session", () => {
+  it("should interrupt user after 5' of pause session", () => {
+    launchPauseSession(mockedTimer, mockedUser);
+
+    expect(mockedTimer.start).toBeCalledWith(5, mockedUser.interrupt);
+  });
+
+  it("should notify user after 4' of pause session", () => {
+    launchPauseSession(mockedTimer, mockedUser);
+
+    expect(mockedTimer.start).toBeCalledWith(4, mockedUser.notify);
   });
 });

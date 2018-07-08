@@ -13,6 +13,7 @@ export type INotifyUser = () => void;
 export type IInterruptUser = () => void;
 
 const WORK_SESSION_IN_MIN = 25;
+const PAUSE_SESSION_IN_MIN = 5;
 const NOTIFICATION_TIME_IN_MIN = 1;
 
 let interruptId: CountdownId;
@@ -27,6 +28,14 @@ export function launchWorkSession(
     WORK_SESSION_IN_MIN - NOTIFICATION_TIME_IN_MIN,
     user.notify
   );
+}
+
+export function launchPauseSession(
+  timer: IDoCountdown,
+  user: IInteractWithUser
+): void {
+  timer.start(PAUSE_SESSION_IN_MIN, user.interrupt);
+  timer.start(PAUSE_SESSION_IN_MIN - NOTIFICATION_TIME_IN_MIN, user.notify);
 }
 
 export function stopWorkSession(timer: IDoCountdown): void {
