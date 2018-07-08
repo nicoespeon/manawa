@@ -1,0 +1,46 @@
+{
+  "name": "pomodory",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Helps you stay focus using the Pomodoro technique",
+  "main": "dist/index.js",
+  "author": "Nicolas Carlo <nicolascarlo.espeon@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "pomodoro",
+    "dory",
+    "productivity",
+    "timer"
+  ],
+  "devDependencies": {
+    "@types/jest": "23.1.4",
+    "husky": "1.0.0-rc.12",
+    "jest": "23.3.0",
+    "prettier": "1.13.7",
+    "pretty-quick": "1.6.0",
+    "ts-jest": "23.0.0",
+    "typescript": "2.9.2"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}
