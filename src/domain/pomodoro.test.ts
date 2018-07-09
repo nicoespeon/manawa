@@ -1,4 +1,8 @@
-import createPomodoro, { IInteractWithUser, IDoCountdown } from "./pomodoro";
+import createPomodoro, {
+  IInteractWithUser,
+  IDoCountdown,
+  Sessions,
+} from "./pomodoro";
 
 let mockedTimer: IDoCountdown<string>;
 let mockedUser: IInteractWithUser;
@@ -35,6 +39,12 @@ describe("launch work session", () => {
     pomodoro.launchWorkSession();
 
     expect(pomodoro.stopSession).toBeCalled();
+  });
+
+  it("should return the Work session type", () => {
+    const session = pomodoro.launchWorkSession();
+
+    expect(session).toBe(Sessions.Work);
   });
 });
 
@@ -93,6 +103,12 @@ describe("launch pause session", () => {
     pomodoro.launchPauseSession();
 
     expect(pomodoro.stopSession).toBeCalled();
+  });
+
+  it("should return the Pause session type", () => {
+    const session = pomodoro.launchPauseSession();
+
+    expect(session).toBe(Sessions.Pause);
   });
 });
 
@@ -192,5 +208,18 @@ describe("launch next session", () => {
 
     expect(pomodoro.launchWorkSession).toHaveBeenCalledTimes(1);
     expect(pomodoro.launchPauseSession).toHaveBeenCalledTimes(1);
+  });
+
+  it("should return the session type (Work)", () => {
+    const session = pomodoro.launchNextSession();
+
+    expect(session).toBe(Sessions.Work);
+  });
+
+  it("should return the session type (Pause)", () => {
+    pomodoro.launchWorkSession();
+    const session = pomodoro.launchNextSession();
+
+    expect(session).toBe(Sessions.Pause);
   });
 });
