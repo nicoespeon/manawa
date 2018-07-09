@@ -1,12 +1,8 @@
-import createPomodoro, {
-  IInteractWithUser,
-  IDoCountdown,
-  IManagePomodoro,
-} from "./pomodoro";
+import createPomodoro, { IInteractWithUser, IDoCountdown } from "./pomodoro";
 
 let mockedTimer: IDoCountdown<string>;
 let mockedUser: IInteractWithUser;
-let pomodoro: IManagePomodoro;
+let pomodoro;
 
 beforeEach(() => {
   mockedTimer = {

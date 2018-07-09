@@ -10,12 +10,6 @@ export interface IInteractWithUser {
   interrupt: () => void;
 }
 
-export interface IManagePomodoro {
-  launchWorkSession: () => void;
-  launchPauseSession: () => void;
-  stopSession: () => void;
-}
-
 const WORK_SESSION_IN_MIN = 25;
 const SHORT_PAUSE_SESSION_IN_MIN = 5;
 const LONG_PAUSE_SESSION_IN_MIN = 15;
@@ -24,7 +18,7 @@ const NOTIFICATION_TIME_IN_MIN = 1;
 function createPomodoro<CountdownId>(
   timer: IDoCountdown<CountdownId>,
   user: IInteractWithUser
-): IManagePomodoro {
+) {
   let interruptId: CountdownId;
   let notifyId: CountdownId;
   let nbOfPauseSession = 0;
