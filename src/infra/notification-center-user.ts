@@ -8,9 +8,9 @@ enum NotifierResponses {
   Activate = "activate",
 }
 
-function createNotificationCenterUser(
-  onInterrupt: Function,
-  onLaunchNextSession: Function
+function createNotificationCenterUser<Prompt>(
+  onInterrupt: () => Prompt,
+  onLaunchNextSession: (prompt: Prompt) => void
 ): IInteractWithUser {
   const title = "🐠  Pomodory";
 
@@ -24,6 +24,8 @@ function createNotificationCenterUser(
     },
 
     interrupt() {
+      const prompt = onInterrupt();
+
       notifier.notify(
         {
           title: title,
@@ -33,12 +35,10 @@ function createNotificationCenterUser(
         },
         (_error, response: NotifierResponses) => {
           if (response === NotifierResponses.Activate) {
-            onLaunchNextSession();
+            onLaunchNextSession(prompt);
           }
         }
       );
-
-      onInterrupt();
     },
   };
 }

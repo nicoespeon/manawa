@@ -5,10 +5,15 @@ import createDebugTimer from "./infra/debug-node-timer";
 import createNotificationCenterUser from "./infra/notification-center-user";
 
 const debugSystemTimer = createDebugTimer();
-const notificationCenterUser = createNotificationCenterUser(askQuestion, () => {
-  const session = pomodoro.launchNextSession();
-  logForSession(session);
-});
+const notificationCenterUser = createNotificationCenterUser<IPromptToUser>(
+  askQuestion,
+  (prompt) => {
+    // FIXME: causes MaxListenersExceededWarning after some time.
+    prompt.close();
+    console.log(`\nLaunch next session from notification.`);
+    onAnswer({ action: Actions.NextSession });
+  }
+);
 
 // Instantiate the hexagon
 import createPomodoro, { Sessions } from "./domain/pomodoro";
@@ -23,54 +28,61 @@ enum Actions {
   Stop = "Nothing, let's stop this",
 }
 
+interface IPromptToUser {
+  close: () => void;
+}
+
 let hasAskedQuestion = false;
-function askQuestion() {
+function askQuestion(): IPromptToUser {
   const message = hasAskedQuestion
     ? "Great! What do you want to do next?"
     : "Hello! What would you like to do now?";
   hasAskedQuestion = true;
 
-  inquirer
-    .prompt([
-      {
-        type: "list",
-        name: "action",
-        message: message,
-        choices: [
-          Actions.NextSession,
-          Actions.StartPomodoro,
-          Actions.TakeABreak,
-          Actions.Stop,
-        ],
-      },
-    ])
-    .then(({ action }) => {
-      let session: Sessions;
+  const prompt = inquirer.prompt([
+    {
+      type: "list",
+      name: "action",
+      message: message,
+      choices: [
+        Actions.NextSession,
+        Actions.StartPomodoro,
+        Actions.TakeABreak,
+        Actions.Stop,
+      ],
+    },
+  ]);
 
-      switch (action) {
-        case Actions.NextSession:
-          session = pomodoro.launchNextSession();
-          break;
+  prompt.then(onAnswer).catch(() => {
+    console.log("🎣  Something bad happen. Exiting…");
+    process.exit(1);
+  });
 
-        case Actions.StartPomodoro:
-          session = pomodoro.launchWorkSession();
-          break;
+  return prompt.ui;
+}
 
-        case Actions.TakeABreak:
-          session = pomodoro.launchPauseSession();
-          break;
+function onAnswer({ action }) {
+  let session: Sessions;
 
-        case Actions.Stop:
-          console.log("🐬  It was a pleasure. See you!");
-          break;
-      }
+  switch (action) {
+    case Actions.NextSession:
+      session = pomodoro.launchNextSession();
+      break;
 
-      if (session) logForSession(session);
-    })
-    .catch(() => {
-      console.log("🎣  Something bad happen. Exiting…");
-      process.exit(1);
-    });
+    case Actions.StartPomodoro:
+      session = pomodoro.launchWorkSession();
+      break;
+
+    case Actions.TakeABreak:
+      session = pomodoro.launchPauseSession();
+      break;
+
+    case Actions.Stop:
+      console.log("🐬  It was a pleasure. See you!");
+      break;
+  }
+
+  if (session) logForSession(session);
 }
 
 function logForSession(session: Sessions): void {
