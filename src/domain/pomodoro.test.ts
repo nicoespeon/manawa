@@ -155,3 +155,42 @@ describe("stop session", () => {
     });
   });
 });
+
+describe("launch next session", () => {
+  beforeEach(() => {
+    spyOn(pomodoro, "launchWorkSession").and.callThrough();
+    spyOn(pomodoro, "launchPauseSession").and.callThrough();
+  });
+
+  it("should launch work session first", () => {
+    pomodoro.launchNextSession();
+
+    expect(pomodoro.launchWorkSession).toHaveBeenCalledTimes(1);
+    expect(pomodoro.launchPauseSession).toHaveBeenCalledTimes(0);
+  });
+
+  it("should launch pause session the second time", () => {
+    pomodoro.launchNextSession();
+    pomodoro.launchNextSession();
+
+    expect(pomodoro.launchWorkSession).toHaveBeenCalledTimes(1);
+    expect(pomodoro.launchPauseSession).toHaveBeenCalledTimes(1);
+  });
+
+  it("should launch work session again the third time", () => {
+    pomodoro.launchNextSession();
+    pomodoro.launchNextSession();
+    pomodoro.launchNextSession();
+
+    expect(pomodoro.launchWorkSession).toHaveBeenCalledTimes(2);
+    expect(pomodoro.launchPauseSession).toHaveBeenCalledTimes(1);
+  });
+
+  it("should launch work session after a pause session", () => {
+    pomodoro.launchPauseSession();
+    pomodoro.launchNextSession();
+
+    expect(pomodoro.launchWorkSession).toHaveBeenCalledTimes(1);
+    expect(pomodoro.launchPauseSession).toHaveBeenCalledTimes(1);
+  });
+});
