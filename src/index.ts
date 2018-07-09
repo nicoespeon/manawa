@@ -79,6 +79,9 @@ function onAnswer({ action }) {
 
     case Actions.Stop:
       console.log("🐬  It was a pleasure. See you!");
+      // After some sessions, prompt doesn't exit itself.
+      // Until a proper fix, ensure we exit the program here.
+      process.exit();
       break;
   }
 
