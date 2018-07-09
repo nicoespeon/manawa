@@ -51,6 +51,7 @@
   "dependencies": {
     "chalk": "2.4.1",
     "inquirer": "6.0.0",
+    "node-notifier": "5.2.1",
     "uuid": "3.3.2"
   }
 }

@@ -2,18 +2,22 @@ import * as inquirer from "inquirer";
 
 // Instantiate "I need to go out" adapters
 import createDebugTimer from "./infra/debug-node-timer";
-import createConsoleUser from "./infra/console-user";
+import createNotificationCenterUser from "./infra/notification-center-user";
 
 const debugSystemTimer = createDebugTimer();
-const consoleUser = createConsoleUser(askQuestion);
+const notificationCenterUser = createNotificationCenterUser(askQuestion, () => {
+  const session = pomodoro.launchNextSession();
+  logForSession(session);
+});
 
 // Instantiate the hexagon
-import createPomodoro from "./domain/pomodoro";
+import createPomodoro, { Sessions } from "./domain/pomodoro";
 
-const pomodoro = createPomodoro(debugSystemTimer, consoleUser);
+const pomodoro = createPomodoro(debugSystemTimer, notificationCenterUser);
 
 // Instantiate "I need to enter" adapters
 enum Actions {
+  NextSession = "Launch next session",
   StartPomodoro = "Start Pomodoro",
   TakeABreak = "Take a break",
   Stop = "Nothing, let's stop this",
@@ -32,26 +36,47 @@ function askQuestion() {
         type: "list",
         name: "action",
         message: message,
-        choices: [Actions.StartPomodoro, Actions.TakeABreak, Actions.Stop],
+        choices: [
+          Actions.NextSession,
+          Actions.StartPomodoro,
+          Actions.TakeABreak,
+          Actions.Stop,
+        ],
       },
     ])
     .then(({ action }) => {
+      let session: Sessions;
+
       switch (action) {
+        case Actions.NextSession:
+          session = pomodoro.launchNextSession();
+          break;
+
         case Actions.StartPomodoro:
-          console.log("🐠  Here we go. Just keep working, just keep working…");
-          pomodoro.launchWorkSession();
+          session = pomodoro.launchWorkSession();
           break;
 
         case Actions.TakeABreak:
-          console.log("🍹  Sure, let's take a breath!");
-          pomodoro.launchPauseSession();
+          session = pomodoro.launchPauseSession();
           break;
 
         case Actions.Stop:
           console.log("🐬  It was a pleasure. See you!");
           break;
       }
+
+      if (session) logForSession(session);
+    })
+    .catch(() => {
+      console.log("🎣  Something bad happen. Exiting…");
+      process.exit(1);
     });
+}
+
+function logForSession(session: Sessions): void {
+  session === Sessions.Work
+    ? console.log("🐠  Here we go. Just keep working, just keep working…")
+    : console.log("🍹  Sure, let's take a breath!");
 }
 
 askQuestion();
