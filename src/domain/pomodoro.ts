@@ -10,7 +10,7 @@ export interface IInteractWithUser {
   interrupt: () => void;
 }
 
-export enum Sessions {
+export enum Session {
   Work = "work",
   Pause = "pause",
 }
@@ -27,11 +27,11 @@ function createPomodoro<CountdownId>(
   let interruptId: CountdownId;
   let notifyId: CountdownId;
   let nbOfPauseSession = 0;
-  let nextSession = Sessions.Work;
+  let nextSession = Session.Work;
 
-  function launchWorkSession(): Sessions {
+  function launchWorkSession(): Session {
     this.stopSession();
-    nextSession = Sessions.Pause;
+    nextSession = Session.Pause;
 
     interruptId = timer.start(WORK_SESSION_IN_MIN, user.interrupt);
     notifyId = timer.start(
@@ -39,12 +39,12 @@ function createPomodoro<CountdownId>(
       user.notify
     );
 
-    return Sessions.Work;
+    return Session.Work;
   }
 
-  function launchPauseSession(): Sessions {
+  function launchPauseSession(): Session {
     this.stopSession();
-    nextSession = Sessions.Work;
+    nextSession = Session.Work;
 
     nbOfPauseSession++;
     const pause_in_min =
@@ -58,11 +58,11 @@ function createPomodoro<CountdownId>(
       user.notify
     );
 
-    return Sessions.Pause;
+    return Session.Pause;
   }
 
-  function launchNextSession(): Sessions {
-    return nextSession === Sessions.Work
+  function launchNextSession(): Session {
+    return nextSession === Session.Work
       ? this.launchWorkSession()
       : this.launchPauseSession();
   }

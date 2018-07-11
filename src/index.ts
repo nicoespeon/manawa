@@ -11,17 +11,17 @@ const notificationCenterUser = createNotificationCenterUser<IPromptToUser>(
     // FIXME: causes MaxListenersExceededWarning after some time.
     prompt.close();
     console.log(`\nLaunch next session from notification.`);
-    onAnswer({ action: Actions.NextSession });
+    onAnswer({ action: Action.NextSession });
   }
 );
 
 // Instantiate the hexagon
-import createPomodoro, { Sessions } from "./domain/pomodoro";
+import createPomodoro, { Session } from "./domain/pomodoro";
 
 const pomodoro = createPomodoro(debugSystemTimer, notificationCenterUser);
 
 // Instantiate "I need to enter" adapters
-enum Actions {
+enum Action {
   NextSession = "Launch next session",
   StartPomodoro = "Start Pomodoro",
   TakeABreak = "Take a break",
@@ -45,10 +45,10 @@ function askQuestion(): IPromptToUser {
       name: "action",
       message: message,
       choices: [
-        Actions.NextSession,
-        Actions.StartPomodoro,
-        Actions.TakeABreak,
-        Actions.Stop,
+        Action.NextSession,
+        Action.StartPomodoro,
+        Action.TakeABreak,
+        Action.Stop,
       ],
     },
   ]);
@@ -62,22 +62,22 @@ function askQuestion(): IPromptToUser {
 }
 
 function onAnswer({ action }) {
-  let session: Sessions;
+  let session: Session;
 
   switch (action) {
-    case Actions.NextSession:
+    case Action.NextSession:
       session = pomodoro.launchNextSession();
       break;
 
-    case Actions.StartPomodoro:
+    case Action.StartPomodoro:
       session = pomodoro.launchWorkSession();
       break;
 
-    case Actions.TakeABreak:
+    case Action.TakeABreak:
       session = pomodoro.launchPauseSession();
       break;
 
-    case Actions.Stop:
+    case Action.Stop:
       console.log("🐬  It was a pleasure. See you!");
       // After some sessions, prompt doesn't exit itself.
       // Until a proper fix, ensure we exit the program here.
@@ -88,8 +88,8 @@ function onAnswer({ action }) {
   if (session) logForSession(session);
 }
 
-function logForSession(session: Sessions): void {
-  session === Sessions.Work
+function logForSession(session: Session): void {
+  session === Session.Work
     ? console.log("🐠  Here we go. Just keep working, just keep working…")
     : console.log("🍹  Sure, let's take a breath!");
 }

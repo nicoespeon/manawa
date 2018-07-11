@@ -4,7 +4,7 @@ import { IInteractWithUser } from "../domain/pomodoro";
 
 export default createNotificationCenterUser;
 
-enum NotifierResponses {
+enum NotifierResponse {
   Activate = "activate",
 }
 
@@ -33,8 +33,8 @@ function createNotificationCenterUser<Prompt>(
           sound: true,
           actions: "Launch next session",
         },
-        (_error, response: NotifierResponses) => {
-          if (response === NotifierResponses.Activate) {
+        (_error, response: NotifierResponse) => {
+          if (response === NotifierResponse.Activate) {
             onLaunchNextSession(prompt);
           }
         }

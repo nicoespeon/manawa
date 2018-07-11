@@ -1,7 +1,7 @@
 import createPomodoro, {
   IInteractWithUser,
   IDoCountdown,
-  Sessions,
+  Session,
 } from "./pomodoro";
 
 let mockedTimer: IDoCountdown<string>;
@@ -44,7 +44,7 @@ describe("launch work session", () => {
   it("should return the Work session type", () => {
     const session = pomodoro.launchWorkSession();
 
-    expect(session).toBe(Sessions.Work);
+    expect(session).toBe(Session.Work);
   });
 });
 
@@ -108,7 +108,7 @@ describe("launch pause session", () => {
   it("should return the Pause session type", () => {
     const session = pomodoro.launchPauseSession();
 
-    expect(session).toBe(Sessions.Pause);
+    expect(session).toBe(Session.Pause);
   });
 });
 
@@ -213,13 +213,13 @@ describe("launch next session", () => {
   it("should return the session type (Work)", () => {
     const session = pomodoro.launchNextSession();
 
-    expect(session).toBe(Sessions.Work);
+    expect(session).toBe(Session.Work);
   });
 
   it("should return the session type (Pause)", () => {
     pomodoro.launchWorkSession();
     const session = pomodoro.launchNextSession();
 
-    expect(session).toBe(Sessions.Pause);
+    expect(session).toBe(Session.Pause);
   });
 });
