@@ -51,12 +51,14 @@ describe("launch work session", () => {
 describe("launch pause session", () => {
   function shouldHaveShortPauseSessionAfter(nbOfPastPauses: number) {
     describe(`after ${nbOfPastPauses} previous pause(s)`, () => {
+      let returnedSession: Session;
+
       beforeEach(() => {
         for (let i = 0; i < nbOfPastPauses; i++) {
           pomodoro.launchPauseSession();
         }
 
-        pomodoro.launchPauseSession();
+        returnedSession = pomodoro.launchPauseSession();
       });
 
       it("should interrupt user after 5'", () => {
@@ -66,17 +68,23 @@ describe("launch pause session", () => {
       it("should notify user after 4'", () => {
         expect(mockedTimer.start).toBeCalledWith(4, mockedUser.notify);
       });
+
+      it("should return the ShortPause session type", () => {
+        expect(returnedSession).toBe(Session.ShortPause);
+      });
     });
   }
 
   function shouldHaveLongPauseSessionAfter(nbOfPastPauses: number) {
     describe(`after ${nbOfPastPauses} previous pause(s)`, () => {
+      let returnedSession: Session;
+
       beforeEach(() => {
         for (let i = 0; i < nbOfPastPauses; i++) {
           pomodoro.launchPauseSession();
         }
 
-        pomodoro.launchPauseSession();
+        returnedSession = pomodoro.launchPauseSession();
       });
 
       it("should interrupt user after 15'", () => {
@@ -85,6 +93,10 @@ describe("launch pause session", () => {
 
       it("should notify user after 14'", () => {
         expect(mockedTimer.start).toBeCalledWith(14, mockedUser.notify);
+      });
+
+      it("should return the LongPause session type", () => {
+        expect(returnedSession).toBe(Session.LongPause);
       });
     });
   }
@@ -103,12 +115,6 @@ describe("launch pause session", () => {
     pomodoro.launchPauseSession();
 
     expect(pomodoro.stopSession).toBeCalled();
-  });
-
-  it("should return the Pause session type", () => {
-    const session = pomodoro.launchPauseSession();
-
-    expect(session).toBe(Session.Pause);
   });
 });
 
@@ -220,6 +226,6 @@ describe("launch next session", () => {
     pomodoro.launchWorkSession();
     const session = pomodoro.launchNextSession();
 
-    expect(session).toBe(Session.Pause);
+    expect(session).toBe(Session.ShortPause);
   });
 });

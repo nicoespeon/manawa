@@ -12,7 +12,8 @@ export interface IInteractWithUser {
 
 export enum Session {
   Work = "work",
-  Pause = "pause",
+  ShortPause = "short-pause",
+  LongPause = "long-pause",
 }
 
 const WORK_SESSION_IN_MIN = 25;
@@ -47,10 +48,11 @@ function createPomodoro<CountdownId>(
     nextSession = Session.Work;
 
     nbOfPauseSession++;
-    const pause_in_min =
-      nbOfPauseSession % 3 === 0
-        ? LONG_PAUSE_SESSION_IN_MIN
-        : SHORT_PAUSE_SESSION_IN_MIN;
+    const isLongPause = nbOfPauseSession % 3 === 0;
+    const pause = isLongPause ? Session.LongPause : Session.ShortPause;
+    const pause_in_min = isLongPause
+      ? LONG_PAUSE_SESSION_IN_MIN
+      : SHORT_PAUSE_SESSION_IN_MIN;
 
     interruptId = timer.start(pause_in_min, user.interrupt);
     notifyId = timer.start(
@@ -58,7 +60,7 @@ function createPomodoro<CountdownId>(
       user.notify
     );
 
-    return Session.Pause;
+    return pause;
   }
 
   function launchNextSession(): Session {
