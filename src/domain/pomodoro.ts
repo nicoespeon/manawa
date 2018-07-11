@@ -6,8 +6,8 @@ export interface IDoCountdown<CountdownId> {
 }
 
 export interface IInteractWithUser {
-  notify: () => void;
-  interrupt: () => void;
+  notify: (session: Session) => void;
+  interrupt: (session: Session) => void;
 }
 
 export enum Session {
@@ -32,12 +32,13 @@ function createPomodoro<CountdownId>(
 
   function launchWorkSession(): Session {
     this.stopSession();
-    nextSession = Session.Pause;
+    nextSession = Session.ShortPause;
 
-    interruptId = timer.start(WORK_SESSION_IN_MIN, user.interrupt);
-    notifyId = timer.start(
-      WORK_SESSION_IN_MIN - NOTIFICATION_TIME_IN_MIN,
-      user.notify
+    interruptId = timer.start(WORK_SESSION_IN_MIN, () =>
+      user.interrupt(Session.Work)
+    );
+    notifyId = timer.start(WORK_SESSION_IN_MIN - NOTIFICATION_TIME_IN_MIN, () =>
+      user.notify(Session.Work)
     );
 
     return Session.Work;
@@ -54,10 +55,9 @@ function createPomodoro<CountdownId>(
       ? LONG_PAUSE_SESSION_IN_MIN
       : SHORT_PAUSE_SESSION_IN_MIN;
 
-    interruptId = timer.start(pause_in_min, user.interrupt);
-    notifyId = timer.start(
-      pause_in_min - NOTIFICATION_TIME_IN_MIN,
-      user.notify
+    interruptId = timer.start(pause_in_min, () => user.interrupt(pause));
+    notifyId = timer.start(pause_in_min - NOTIFICATION_TIME_IN_MIN, () =>
+      user.notify(pause)
     );
 
     return pause;

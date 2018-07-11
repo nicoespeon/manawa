@@ -10,7 +10,7 @@ let pomodoro;
 
 beforeEach(() => {
   mockedTimer = {
-    start: jest.fn(),
+    start: jest.fn((_countdown, cb) => cb()),
     cancel: jest.fn(),
   };
   mockedUser = {
@@ -24,13 +24,15 @@ describe("launch work session", () => {
   it("should interrupt user after 25'", () => {
     pomodoro.launchWorkSession();
 
-    expect(mockedTimer.start).toBeCalledWith(25, mockedUser.interrupt);
+    expect(mockedTimer.start).toBeCalledWith(25, expect.any(Function));
+    expect(mockedUser.interrupt).toBeCalledWith(Session.Work);
   });
 
   it("should notify user after 24'", () => {
     pomodoro.launchWorkSession();
 
-    expect(mockedTimer.start).toBeCalledWith(24, mockedUser.notify);
+    expect(mockedTimer.start).toBeCalledWith(24, expect.any(Function));
+    expect(mockedUser.notify).toBeCalledWith(Session.Work);
   });
 
   it("should stop current session", () => {
@@ -62,11 +64,13 @@ describe("launch pause session", () => {
       });
 
       it("should interrupt user after 5'", () => {
-        expect(mockedTimer.start).toBeCalledWith(5, mockedUser.interrupt);
+        expect(mockedTimer.start).toBeCalledWith(5, expect.any(Function));
+        expect(mockedUser.interrupt).toBeCalledWith(Session.ShortPause);
       });
 
       it("should notify user after 4'", () => {
-        expect(mockedTimer.start).toBeCalledWith(4, mockedUser.notify);
+        expect(mockedTimer.start).toBeCalledWith(4, expect.any(Function));
+        expect(mockedUser.notify).toBeCalledWith(Session.ShortPause);
       });
 
       it("should return the ShortPause session type", () => {
@@ -88,11 +92,13 @@ describe("launch pause session", () => {
       });
 
       it("should interrupt user after 15'", () => {
-        expect(mockedTimer.start).toBeCalledWith(15, mockedUser.interrupt);
+        expect(mockedTimer.start).toBeCalledWith(15, expect.any(Function));
+        expect(mockedUser.interrupt).toBeCalledWith(Session.LongPause);
       });
 
       it("should notify user after 14'", () => {
-        expect(mockedTimer.start).toBeCalledWith(14, mockedUser.notify);
+        expect(mockedTimer.start).toBeCalledWith(14, expect.any(Function));
+        expect(mockedUser.notify).toBeCalledWith(Session.LongPause);
       });
 
       it("should return the LongPause session type", () => {
