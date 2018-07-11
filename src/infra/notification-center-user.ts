@@ -1,6 +1,6 @@
 import * as notifier from "node-notifier";
 
-import { IInteractWithUser } from "../domain/pomodoro";
+import { IInteractWithUser, Session } from "../domain/pomodoro";
 
 export default createNotificationCenterUser;
 
@@ -15,23 +15,36 @@ function createNotificationCenterUser<Prompt>(
   const title = "🐠  Pomodory";
 
   return {
-    notify() {
+    notify(session) {
+      const message =
+        session === Session.Work
+          ? "Work session is almost over. Commit your work now."
+          : "Pause is almost over, quit distractions now.";
+
       notifier.notify({
         title: title,
-        message: "Session is almost over.",
+        message: message,
         sound: false,
       });
     },
 
-    interrupt() {
+    interrupt(session: Session) {
       const prompt = onInterrupt();
+
+      const message =
+        session === Session.Work
+          ? "STOP! Stop working now, take a break!"
+          : "Pause is over, let's go back to work!";
+
+      const nextActionMessage =
+        session === Session.Work ? "Take a break" : "Back to work";
 
       notifier.notify(
         {
           title: title,
-          message: "STOP! Session is now over!",
+          message: message,
           sound: true,
-          actions: "Launch next session",
+          actions: nextActionMessage,
         },
         (_error, response: NotifierResponse) => {
           if (response === NotifierResponse.Activate) {
