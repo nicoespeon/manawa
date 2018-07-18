@@ -15,6 +15,8 @@ function log(s: string): void {
 }
 
 function createDebugTimer(): IDoCountdown<DebugTimer> {
+  log("⏰ Use the fake timer.");
+
   return {
     start(duration, action) {
       const id = uuid();

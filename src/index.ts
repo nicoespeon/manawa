@@ -1,3 +1,5 @@
+import * as program from "commander";
+
 import createDebugTimer from "./infra/debug-node-timer";
 import createTimer from "./infra/node-timer";
 import createNotificationCenterUser from "./infra/notification-center-user";
@@ -5,8 +7,11 @@ import createInquirerApi, { IPromptToUser, Action } from "./infra/inquirer-api";
 
 import createPomodoro from "./domain/pomodoro";
 
+program
+  .option("-d, --debug", "Debug mode (use fake timer)")
+  .parse(process.argv);
+
 // Instantiate "I need to go out" adapters
-const debugSystemTimer = createDebugTimer();
 const notificationCenterUser = createNotificationCenterUser<IPromptToUser>(
   () => inquirerApi.askQuestion(),
   (prompt) => {
@@ -18,7 +23,9 @@ const notificationCenterUser = createNotificationCenterUser<IPromptToUser>(
 );
 
 // Instantiate the hexagon
-const pomodoro = createPomodoro(debugSystemTimer, notificationCenterUser);
+const pomodoro = program.debug
+  ? createPomodoro(createDebugTimer(), notificationCenterUser)
+  : createPomodoro(createTimer(), notificationCenterUser);
 
 // Instantiate "I need to enter" adapters
 
