@@ -46,9 +46,10 @@ function askQuestion(): IPromptToUser {
       message: message,
       choices: [
         Action.NextSession,
+        Action.Stop,
+        new inquirer.Separator(),
         Action.StartPomodoro,
         Action.TakeABreak,
-        Action.Stop,
       ],
     },
   ]);
