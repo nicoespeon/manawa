@@ -1,7 +1,6 @@
 import * as uuid from "uuid/v4";
 import chalk from "chalk";
-
-import { IDoCountdown } from "../domain/pomodoro";
+import { IDoCountdown } from "pomodory-core";
 
 export default createDebugTimer;
 

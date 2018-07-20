@@ -1,6 +1,6 @@
 import * as inquirer from "inquirer";
 
-import { Session, Pomodoro } from "../domain/pomodoro";
+import { Session, Pomodoro } from "pomodory-core";
 
 export enum Action {
   NextSession = "Launch next session",

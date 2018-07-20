@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    "moduleResolution": "node",
     "outDir": "dist",
     "lib": [
       "es2015"
     ]
-  }
+  },
+  "exclude": [
+    "*.test.ts"
+  ]
 }

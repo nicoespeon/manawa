@@ -1,4 +1,4 @@
-import { IDoCountdown } from "../domain/pomodoro";
+import { IDoCountdown } from "pomodory-core";
 
 export default createTimer;
 

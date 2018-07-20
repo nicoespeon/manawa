@@ -1,6 +1,5 @@
 import * as notifier from "node-notifier";
-
-import { IInteractWithUser, Session } from "../domain/pomodoro";
+import { IInteractWithUser, Session } from "pomodory-core";
 
 export default createNotificationCenterUser;
 

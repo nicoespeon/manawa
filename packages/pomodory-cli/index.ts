@@ -1,11 +1,10 @@
 import * as program from "commander";
+import createPomodoro from "pomodory-core";
 
-import createDebugTimer from "./infra/debug-node-timer";
-import createTimer from "./infra/node-timer";
-import createNotificationCenterUser from "./infra/notification-center-user";
-import createInquirerApi, { IPromptToUser, Action } from "./infra/inquirer-api";
-
-import createPomodoro from "./domain/pomodoro";
+import createDebugTimer from "./debug-node-timer";
+import createTimer from "./node-timer";
+import createNotificationCenterUser from "./notification-center-user";
+import createInquirerApi, { IPromptToUser, Action } from "./inquirer-api";
 
 program
   .option("-d, --debug", "Debug mode (use fake timer)")
