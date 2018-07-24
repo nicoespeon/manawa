@@ -1,15 +1,16 @@
 {
-  "name": "pomodory-cli",
+  "name": "manawa-cli",
   "private": false,
   "version": "1.0.0",
-  "description": "Helps you stay focus using the Pomodoro technique, in your terminal",
+  "description": "Helps you stay focus, now, in your terminal",
   "main": "dist/index.js",
   "author": "Nicolas Carlo <nicolascarlo.espeon@gmail.com>",
   "license": "MIT",
   "keywords": [
-    "pomodoro",
-    "dory",
+    "manawa",
+    "time",
     "productivity",
+    "pomodoro",
     "timer",
     "cli"
   ],
@@ -18,7 +19,7 @@
     "commander": "^2.16.0",
     "inquirer": "6.0.0",
     "node-notifier": "5.2.1",
-    "pomodory-core": "^1.0.0",
+    "manawa-core": "^1.0.0",
     "uuid": "3.3.2"
   },
   "scripts": {

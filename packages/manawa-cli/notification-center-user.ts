@@ -1,5 +1,5 @@
 import * as notifier from "node-notifier";
-import { IInteractWithUser, Session } from "pomodory-core";
+import { IInteractWithUser, Session } from "manawa-core";
 
 export default createNotificationCenterUser;
 
@@ -11,7 +11,7 @@ function createNotificationCenterUser<Prompt>(
   onInterrupt: () => Prompt,
   onLaunchNextSession: (prompt: Prompt) => void
 ): IInteractWithUser {
-  const title = "🐠  Pomodory";
+  const title = "🐠  Manawa";
 
   return {
     notify(session) {

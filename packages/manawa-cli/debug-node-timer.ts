@@ -1,6 +1,6 @@
 import * as uuid from "uuid/v4";
 import chalk from "chalk";
-import { IDoCountdown } from "pomodory-core";
+import { IDoCountdown } from "manawa-core";
 
 export default createDebugTimer;
 

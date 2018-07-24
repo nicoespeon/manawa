@@ -1,6 +1,6 @@
 import * as inquirer from "inquirer";
 
-import { Session, Pomodoro } from "pomodory-core";
+import { Session, Pomodoro } from "manawa-core";
 
 export enum Action {
   NextSession = "Launch next session",

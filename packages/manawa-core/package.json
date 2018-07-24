@@ -1,15 +1,16 @@
 {
-  "name": "pomodory-core",
+  "name": "manawa-core",
   "private": false,
   "version": "1.0.0",
-  "description": "Core domain of the Pomodory suite, contains Pomodoro business logic.",
+  "description": "Productivity techniques to help you stay focus, now.",
   "main": "dist/pomodoro.js",
   "author": "Nicolas Carlo <nicolascarlo.espeon@gmail.com>",
   "license": "MIT",
   "keywords": [
-    "pomodoro",
-    "dory",
+    "manawa",
+    "time",
     "productivity",
+    "pomodoro",
     "timer"
   ],
   "scripts": {

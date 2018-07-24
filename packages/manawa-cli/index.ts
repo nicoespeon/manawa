@@ -1,5 +1,5 @@
 import * as program from "commander";
-import createPomodoro from "pomodory-core";
+import createPomodoro from "manawa-core";
 
 import createDebugTimer from "./debug-node-timer";
 import createTimer from "./node-timer";

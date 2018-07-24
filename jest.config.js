@@ -11,7 +11,7 @@ module.exports = {
         "^.+\\.(ts|tsx)$": "ts-jest",
       },
       moduleFileExtensions: ["ts", "tsx", "js"],
-      rootDir: "<rootDir>/packages/pomodory-core/",
+      rootDir: "<rootDir>/packages/manawa-core/",
       testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
     },
     {
@@ -20,7 +20,7 @@ module.exports = {
         "^.+\\.(ts|tsx)$": "ts-jest",
       },
       moduleFileExtensions: ["ts", "tsx", "js"],
-      rootDir: "<rootDir>/packages/pomodory-cli/",
+      rootDir: "<rootDir>/packages/manawa-cli/",
       testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
     },
   ],

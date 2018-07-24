@@ -1,15 +1,16 @@
 {
-  "name": "pomodory-web",
+  "name": "manawa-web",
   "private": false,
   "version": "1.0.0",
-  "description": "Helps you stay focus using the Pomodoro technique, in your browser",
+  "description": "Helps you stay focus, now, in your browser",
   "main": "dist/main.js",
   "author": "Nicolas Carlo <nicolascarlo.espeon@gmail.com>",
   "license": "MIT",
   "keywords": [
-    "pomodoro",
-    "dory",
+    "manawa",
+    "time",
     "productivity",
+    "pomodoro",
     "timer",
     "web"
   ],
