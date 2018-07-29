@@ -22,6 +22,11 @@
     "manawa-core": "^1.0.0",
     "uuid": "3.3.2"
   },
+  "devDependencies": {
+    "@types/commander": "^2.12.2",
+    "@types/node": "10.5.2",
+    "@types/uuid": "3.4.3"
+  },
   "scripts": {
     "prestart": "tsc",
     "start": "node ./dist/index.js"
