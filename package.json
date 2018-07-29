@@ -12,7 +12,6 @@
     "prettier": "1.13.7",
     "pretty-quick": "1.6.0",
     "ts-jest": "23.0.0",
-    "tsc": "1.20150623.0",
     "typescript": "2.9.2"
   },
   "scripts": {
